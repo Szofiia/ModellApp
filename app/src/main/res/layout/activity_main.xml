@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorDarkMango"
+    android:orientation="vertical"
+    tools:context="com.example.modellapp.MainActivity">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="224dp"
+            android:background="@drawable/sunrise_header"
+
+            android:maxLines="1"
+            android:text="Dummy Title"
+            android:textAppearance="@style/titleText" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="right"
+            android:paddingBottom="24dp"
+            android:paddingRight="24dp"
+
+            android:text="Choose a dummy option"
+            android:textAppearance="@style/mainText" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/newScene"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_gravity="top"
+            android:background="@drawable/button_top"
+            android:paddingBottom="120dp"
+
+            android:paddingLeft="88dp"
+            android:text="Create a new dummy"
+            android:textAppearance="@style/buttonText" />
+
+        <Button
+            android:id="@+id/loadScene"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/button_bot"
+            android:paddingLeft="-112dp"
+            android:paddingTop="120dp"
+
+            android:text="Load saved Dummy"
+            android:textAppearance="@style/buttonText" />
+        <!--android:onClick="loadScene"-->
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSunrise"
+
+        android:gravity="center"
+
+        android:text="Version 0.01 | Created by Zsófia Solymosi "
+        android:textColor="@color/colorAccent" />
+
+</LinearLayout>
