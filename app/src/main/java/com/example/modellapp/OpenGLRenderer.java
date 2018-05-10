@@ -84,8 +84,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 
     public OpenGLRenderer(Context context, OpenGLSurfaceView glSurfaceView){
         mActivityContext = context;
-        mGlSurfaceView = glSurfaceView;/*
-        objLoader = new OBJLoader(context, "BB8.obj");*/
+        mGlSurfaceView = glSurfaceView;
         cAngles = new Angles(0.0f,0.0f);
 
 
@@ -151,7 +150,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         // Kockak rajzolasa
         Matrix.setIdentityM(mModel.mModelMatrix, 0);
         Matrix.translateM(mModel.mModelMatrix, 0, 0.0f, 0.0f, 0.0f);
-        Matrix.scaleM(mModel.mModelMatrix, 0, 2.0F,mScale * 2.0F,2.0F);
+        Matrix.scaleM(mModel.mModelMatrix, 0, 0.3F,mScale * 0.3F,0.3F);
         mModel.draw();
         Matrix.setLookAtM(mModel.mViewMatrix, 0, eye.x, eye.y, eye.z, lookAt.x, lookAt.y, lookAt.z, up.x, up.y, up.z);
 

@@ -3,10 +3,18 @@ package com.example.modellapp.tools;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.modellapp.vecmath.Point2f;
+import com.example.modellapp.vecmath.Vector3f;
+
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Struct;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 public class OBJLoader {
@@ -18,95 +26,132 @@ public class OBJLoader {
 
     public String TAG = "OBJ File Loader";
 
-    class IndexedVertex{
-        int v, vt, vn;
-
-        public  IndexedVertex(int v, int vt, int vn){
-            this.v = v;
-            this.vt = vt;
-            this.vn = vn;
-        }
-    };
-
-    boolean processLine(){
-        return true;
-
-    }
-
-    boolean skipCommentLine(){
-        return true;
-    }
-
-    void skipLine(){
-
-    }
-
-    void addVertex(IndexedVertex vertex){
-
-    }
+    public boolean hasNoTex = false;
 
     public OBJLoader(Context context, String file){
-        Vector<Float> vertices = new Vector<>();
-        Vector<Float> normals = new Vector<>();
-        Vector<Float> textures = new Vector<>();
-        Vector<String> faces = new Vector<>();
+        Vector<Vector3f> vertCoords = new Vector<>();
+        Vector<Point2f> textCoords = new Vector<>();
+        Vector<Vector3f> normCoords = new Vector<>();
+        Vector<Short> vIndBuf = new Vector<>();
+        Vector<Short> tIndBuf = new Vector<>();
+        Vector<Short> nIndBuf = new Vector<>();
 
-        BufferedReader reader = null;
         try {
-            InputStreamReader in = new InputStreamReader(context.getAssets().open(file));
-            reader = new BufferedReader(in);
+            List<String> fileContent = new ArrayList<>();
 
-            // read file until EOF
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(" ");
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open(file)));
 
-                switch (parts[0]) {
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                fileContent.add(mLine);
+            }
+
+            for (String row: fileContent) {
+                List<String> contents = Arrays.asList(row.replaceAll("(^\\s+|\\s+$)", "").split("\\s+"));
+                switch (contents.get(0)){
                     case "v":
                         // vertices
-                        Log.i(TAG, "OBJLoader: " + parts);
-                        vertices.add(Float.valueOf(parts[1]));
-                        vertices.add(Float.valueOf(parts[2]));
-                        vertices.add(Float.valueOf(parts[3]));
+                        Log.i(TAG, "OBJLoader: " + contents);
+                        vertCoords.add(new Vector3f(Float.valueOf(contents.get(1)), Float.valueOf(contents.get(2)), Float.valueOf(contents.get(3))));
                         break;
                     case "vt":
                         // textures
-                        Log.i(TAG, "OBJLoader: " + parts );
-                        textures.add(Float.valueOf(parts[1]));
-                        textures.add(Float.valueOf(parts[2]));
+                        Log.i(TAG, "OBJLoader: " + contents );
+                        textCoords.add(new Point2f(Float.valueOf(contents.get(1)), Float.valueOf(contents.get(2))));
                         break;
                     case "vn":
                         // normals
-                        Log.i(TAG, "OBJLoader: " + parts);
-                        normals.add(Float.valueOf(parts[1]));
-                        normals.add(Float.valueOf(parts[2]));
-                        normals.add(Float.valueOf(parts[3]));
+                        Log.i(TAG, "OBJLoader: " + contents);
+                        normCoords.add(new Vector3f(Float.valueOf(contents.get(1)), Float.valueOf(contents.get(2)), Float.valueOf(contents.get(3))));
                         break;
                     case "f":
 //                      faces: vertex/texture/normal
-                        faces.add(parts[1]);
-                        faces.add(parts[2]);
-                        faces.add(parts[3]);
+                        if(contents.size() == 4) {
+                            for (int i = 1; i < 4; ++i) {
+                                String[] parts = contents.get(i).split("/");
+                                if (parts[1] == "") {
+                                    vIndBuf.add(Short.valueOf(parts[0]));
+                                    nIndBuf.add(Short.valueOf(parts[2]));
+                                    hasNoTex = true;
+
+                                } else {
+                                    vIndBuf.add(Short.valueOf(parts[0]));
+                                    tIndBuf.add(Short.valueOf(parts[1]));
+                                    nIndBuf.add(Short.valueOf(parts[2]));
+                                }
+                            }
+                        }else{
+                            for (int i = 1; i < 4; ++i) {
+                                String[] parts = contents.get(i).split("/");
+                                if (parts[1] == "") {
+                                    vIndBuf.add(Short.valueOf(parts[0]));
+                                    nIndBuf.add(Short.valueOf(parts[2]));
+                                    hasNoTex = true;
+
+                                } else {
+                                    vIndBuf.add(Short.valueOf(parts[0]));
+                                    tIndBuf.add(Short.valueOf(parts[1]));
+                                    nIndBuf.add(Short.valueOf(parts[2]));
+                                }
+                            }
+
+                            String[] parts = contents.get(1).split("/");
+                            vIndBuf.add(Short.valueOf(parts[0]));
+                            tIndBuf.add(Short.valueOf(parts[1]));
+                            nIndBuf.add(Short.valueOf(parts[2]));
+
+                            parts = contents.get(3).split("/");
+                            vIndBuf.add(Short.valueOf(parts[0]));
+                            tIndBuf.add(Short.valueOf(parts[1]));
+                            nIndBuf.add(Short.valueOf(parts[2]));
+
+                            parts = contents.get(4).split("/");
+                            vIndBuf.add(Short.valueOf(parts[0]));
+                            tIndBuf.add(Short.valueOf(parts[1]));
+                            nIndBuf.add(Short.valueOf(parts[2]));
+
+
+
+
+                        }
                         break;
+                    default: break;
                 }
             }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
-            // cannot load or read file
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    //log the exception
-                }
-            }
+            e.printStackTrace();
         }
 
-        numFaces = faces.size();
+
+        numFaces = vIndBuf.size();
+
         this.normals = new float[numFaces * 3];
-        textureCoordinates = new float[numFaces * 2];
-        positions = new float[numFaces * 3];
-        int positionIndex = 0;
+        this.textureCoordinates = new float[numFaces * 2];
+        this.positions = new float[numFaces * 3];
+
+        int posX = 0;
+        for(Short index: vIndBuf){
+            positions[posX++] = vertCoords.get( index - 1 ).x;
+            positions[posX++] = vertCoords.get( index - 1 ).y;
+            positions[posX++] = vertCoords.get( index - 1 ).z;
+        }
+        posX = 0;
+        for(Short index: tIndBuf){
+            textureCoordinates[posX++] = textCoords.get( index - 1 ).x;
+            textureCoordinates[posX++] = 1 - textCoords.get( index - 1 ).y;
+        }
+        posX = 0;
+        for(Short index: nIndBuf){
+            normals[posX++] = normCoords.get( index - 1 ).x;
+            normals[posX++] = normCoords.get( index - 1 ).y;
+            normals[posX++] = normCoords.get( index - 1 ).z;
+        }
+
+/*        int positionIndex = 0;
         int normalIndex = 0;
         int textureIndex = 0;
         for (String face : faces) {
@@ -126,7 +171,7 @@ public class OBJLoader {
             this.normals[textureIndex++] = normals.get(index++);
             this.normals[textureIndex++] = normals.get(index++);
             this.normals[textureIndex++] = normals.get(index);
-        }
+        }*/
 
     }
 

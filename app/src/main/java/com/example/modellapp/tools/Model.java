@@ -5,7 +5,6 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 import com.example.modellapp.R;
-import com.example.modellapp.TextureHelper;
 import com.example.modellapp.shaders.ObjectShader;
 
 import java.nio.ByteBuffer;
@@ -18,47 +17,36 @@ public class Model {
     private final int POS_DATA_SIZE = 3;
     private final int NORM_DATA_SIZE = 3;
     private final int TEXCOORD_DATA_SIZE = 2;
-    final int STRIDE = (
-            POS_DATA_SIZE +
-                    NORM_DATA_SIZE +
-                    TEXCOORD_DATA_SIZE) * BYTES_PER_FLOAT;
 
-    public OBJLoader mObjLoader;
-    private FloatBuffer mCubeBuffer;
-    private final int mCubeBufferIdx;
-    private int mMVMatrixHandle;
-    private int mMVPMatrixHandle;
-    private int mTextureUniformHandle;
-    private int mPositionHandle;
-    private int mNormalHandle;
-    private int mTextureCoordinateHandle;
     private int mLightPosHandle;
-    private int brickDataHandle;
-    private int grassDataHandle;
     private int textureUniformHandle;
     private int textureCoordinateHandle;
+    private int brickDataHandle;
+    private int grassDataHandle;
+    private final int mCubeBufferIdx;
 
     private int queuedMinFilter;
     private int queuedMagFilter;
 
-    public float[] mViewMatrix = new float[16];
-    public float[] mModelMatrix = new float[16];
-    public float[] mProjectionMatrix = new float[16];
-    public float[] mMVPMatrix = new float[16];
+    public float[] mViewMatrix;
+    public float[] mModelMatrix;
+    public float[] mProjectionMatrix;
+    private float[] mMVPMatrix;
 
-    private float[] mLightPosInEyeSpace = new float[16];
-    private final float[] lightPosInModelSpace = new float[] {0.0f, 0.0f, 0.0f, 1.0f};
-    private final float[] lightPosInWorldSpace = new float[4];
-    private final float[] lightPosInEyeSpace = new float[4];
+    private float[] mLightPosInEyeSpace;
+    private final float[] lightPosInModelSpace;
 
     private int mProgramID;
     private int pointProgramID;
     private float[] mLightModelMatrix = new float[16];
+    int COUNT;
 
     public Model(Context context){
 
-        mObjLoader = new OBJLoader(context, "BB8.obj");
+        ///MI VAN HA NINCS TEX DUDE
 
+        OBJLoader mObjLoader = new OBJLoader(context, "Apple.obj");
+        COUNT = mObjLoader.numFaces;
         final int cubeDataLength = mObjLoader.positions.length +
                 mObjLoader.normals.length +
                 mObjLoader.textureCoordinates.length;
@@ -67,9 +55,9 @@ public class Model {
         int cubeNormalOffset = 0;
         int cubeTextureOffset = 0;
 
-        mCubeBuffer = ByteBuffer.allocateDirect(cubeDataLength * BYTES_PER_FLOAT)
+        FloatBuffer mCubeBuffer = ByteBuffer.allocateDirect(cubeDataLength * BYTES_PER_FLOAT)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
-        for (int v = 0; v < 36; v++) {
+        for (int v = 0; v < COUNT; v++) {
             mCubeBuffer.put(mObjLoader.positions, cubePositionOffset, POS_DATA_SIZE);
             cubePositionOffset += POS_DATA_SIZE;
             mCubeBuffer.put(mObjLoader.normals, cubeNormalOffset, NORM_DATA_SIZE);
@@ -91,7 +79,6 @@ public class Model {
 
         mCubeBufferIdx = vertexBuffer[0];
         mCubeBuffer.limit(0);
-        mCubeBuffer = null;
 
 
         final int mVsID = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ObjectShader.getOVS());
@@ -112,10 +99,10 @@ public class Model {
                 pointFragmentShaderHandle,
                 new String[] {"a_Position"});
 
-        brickDataHandle = TextureHelper.loadTexture(context, R.drawable.scratched);
+        brickDataHandle = TextureLoader.loadTexture(context, R.drawable.wax);
         GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
 
-        grassDataHandle = TextureHelper.loadTexture(context, R.drawable.noisy_grass_public_domain);
+        grassDataHandle = TextureLoader.loadTexture(context, R.drawable.noisy_grass_public_domain);
         GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
 
         if (queuedMinFilter != 0)
@@ -128,17 +115,23 @@ public class Model {
             setMagFilter(queuedMagFilter);
         }
 
+        mLightPosInEyeSpace = new float[16];
+        lightPosInModelSpace = new float[] {0.0f, 0.0f, 0.0f, 1.0f};
+        mViewMatrix = new float[16];
+        mModelMatrix = new float[16];
+        mProjectionMatrix = new float[16];
+        mMVPMatrix = new float[16];
     }
 
     public void draw(){
         GLES20.glUseProgram(mProgramID);
 
-        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgramID, "u_MVPMatrix");
-        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgramID, "u_MVMatrix");
-        mTextureUniformHandle = GLES20.glGetUniformLocation(mProgramID, "u_Texture");
-        mPositionHandle = GLES20.glGetAttribLocation(mProgramID, "a_Position");
-        mNormalHandle = GLES20.glGetAttribLocation(mProgramID, "a_Normal");
-        mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgramID, "a_TexCoordinate");
+        int mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgramID, "u_MVPMatrix");
+        int mMVMatrixHandle = GLES20.glGetUniformLocation(mProgramID, "u_MVMatrix");
+        int mTextureUniformHandle = GLES20.glGetUniformLocation(mProgramID, "u_Texture");
+        int mPositionHandle = GLES20.glGetAttribLocation(mProgramID, "a_Position");
+        int mNormalHandle = GLES20.glGetAttribLocation(mProgramID, "a_Normal");
+        int mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgramID, "a_TexCoordinate");
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, brickDataHandle);
@@ -149,6 +142,10 @@ public class Model {
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mCubeBufferIdx);
         GLES20.glEnableVertexAttribArray(mPositionHandle);
+        int STRIDE = (
+                POS_DATA_SIZE +
+                        NORM_DATA_SIZE +
+                        TEXCOORD_DATA_SIZE) * BYTES_PER_FLOAT;
         GLES20.glVertexAttribPointer(
                 mPositionHandle,
                 POS_DATA_SIZE, GLES20.GL_FLOAT,
@@ -183,7 +180,7 @@ public class Model {
 
         GLES20.glUniform3f(mLightPosHandle, mLightPosInEyeSpace[0], mLightPosInEyeSpace[1], mLightPosInEyeSpace[2]);
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 36);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, COUNT);
 
         GLES20.glDisableVertexAttribArray(mPositionHandle);
         GLES20.glDisableVertexAttribArray(mNormalHandle);
@@ -196,18 +193,14 @@ public class Model {
         final int pointMVPMatrixHandle = GLES20.glGetUniformLocation(pointProgramID, "u_MVPMatrix");
         final int pointPositionHandle = GLES20.glGetAttribLocation(pointProgramID, "a_Position");
 
-        // Atadjuk a poziciot
         GLES20.glVertexAttrib3f(pointPositionHandle, lightPosInModelSpace[0], lightPosInModelSpace[1], lightPosInModelSpace[2]);
 
-        // nem hasznalunk buffer objectet: dobjuk el a vertex array-eket
         GLES20.glDisableVertexAttribArray(pointPositionHandle);
 
-        // Adjuk at a transzf. mx-ot
         Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mLightModelMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
         GLES20.glUniformMatrix4fv(pointMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 
-        // Rajzoljuk ki
         GLES20.glDrawArrays(GLES20.GL_POINTS, 0, 1);
     }
 

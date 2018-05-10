@@ -1,4 +1,4 @@
-package com.example.modellapp;
+package com.example.modellapp.tools;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
-public class TextureHelper
+public class TextureLoader
 {
     public static int loadTexture(final Context context, final int resourceId)
     {
