@@ -2,6 +2,7 @@ package com.example.modellapp;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,10 @@ import android.view.View;
 import android.widget.Button;
 
 public class SceneActivity extends AppCompatActivity {
+
+    String FILENAME;
+    int TEXNAME;
+
     private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
     private float mPreviousX;
     private float mPreviousY;
@@ -33,6 +38,10 @@ public class SceneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent i = getIntent();
+        FILENAME = i.getStringExtra("_FILENAME");
+        TEXNAME = i.getIntExtra("_TEXNAME", 0);
+
         setContentView(R.layout.activity_scene);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -51,12 +60,12 @@ public class SceneActivity extends AppCompatActivity {
         if (supportsES3){
             // Keszitsunk OpenGL ES 3.0 context-et
             openGLSurfaceView.setEGLContextClientVersion(3);
-            mRenderer = new OpenGLRenderer(this, openGLSurfaceView);
+            mRenderer = new OpenGLRenderer(this, openGLSurfaceView, FILENAME, TEXNAME);
             openGLSurfaceView.setRenderer(mRenderer);
         }else if(confInfo.reqGlEsVersion >= 0x20000){
             // Keszitsunk OpenGL ES 2.0 context-et
             openGLSurfaceView.setEGLContextClientVersion(2);
-            mRenderer = new OpenGLRenderer(this, openGLSurfaceView);
+            mRenderer = new OpenGLRenderer(this, openGLSurfaceView, FILENAME, TEXNAME);
             openGLSurfaceView.setRenderer(mRenderer);
         }else{
             return;

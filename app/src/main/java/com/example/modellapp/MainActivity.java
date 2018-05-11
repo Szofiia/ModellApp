@@ -13,6 +13,9 @@ import com.example.modellapp.vecmath.Vector3f;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String FILENAME;
+    public static int TEXNAME;
+
     private Button openNewScene;
     private Button loadScene;
 
@@ -24,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
     static Angles mAngles;
     static boolean isLoaded = false;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         openNewScene= findViewById(R.id.newScene);
         openNewScene.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, SceneActivity.class);
+                Intent i = new Intent(MainActivity.this, ModelMenuActivity.class);
                 startActivity(i);
             }
         });

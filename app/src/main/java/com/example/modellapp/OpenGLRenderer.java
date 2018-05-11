@@ -70,6 +70,9 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 
     private int pointProgramID;
 
+    int TEX;
+    String FILE;
+
     Vector3f eye;
     Vector3f lookAt;
     Vector3f up;
@@ -82,18 +85,19 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 
     private int mProgramID;
 
-    public OpenGLRenderer(Context context, OpenGLSurfaceView glSurfaceView){
+    public OpenGLRenderer(Context context, OpenGLSurfaceView glSurfaceView, String _FILE, int _TEX){
         mActivityContext = context;
         mGlSurfaceView = glSurfaceView;
         cAngles = new Angles(0.0f,0.0f);
-
+        FILE = _FILE;
+        TEX = _TEX;
 
     }
 
     @Override
     public void onSurfaceCreated(GL10 glUnused, EGLConfig config)
     {
-        mModel = new Model(mActivityContext);
+        mModel = new Model(mActivityContext, FILE, TEX);
 
         GLES20.glClearColor(0.125f, 0.25f, 0.5f, 1.0f);
 

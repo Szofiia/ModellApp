@@ -3,7 +3,9 @@
     package="com.example.modellapp">
 
     <!-- Tell the system this app requires OpenGL ES 2.0. -->
-    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SceneActivity"></activity>
+        <activity android:name=".SceneActivity" />
+        <activity
+            android:name=".ModelMenuActivity"
+            android:label="@string/title_activity_model_menu"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -41,11 +41,11 @@ public class Model {
     private float[] mLightModelMatrix = new float[16];
     int COUNT;
 
-    public Model(Context context){
+    public Model(Context context, String FILE, int TEX){
 
         ///MI VAN HA NINCS TEX DUDE
 
-        OBJLoader mObjLoader = new OBJLoader(context, "Apple.obj");
+        OBJLoader mObjLoader = new OBJLoader(context, FILE);
         COUNT = mObjLoader.numFaces;
         final int cubeDataLength = mObjLoader.positions.length +
                 mObjLoader.normals.length +
@@ -99,10 +99,10 @@ public class Model {
                 pointFragmentShaderHandle,
                 new String[] {"a_Position"});
 
-        brickDataHandle = TextureLoader.loadTexture(context, R.drawable.wax);
+        brickDataHandle = TextureLoader.loadTexture(context, TEX);
         GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
 
-        grassDataHandle = TextureLoader.loadTexture(context, R.drawable.noisy_grass_public_domain);
+        grassDataHandle = TextureLoader.loadTexture(context, TEX);
         GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
 
         if (queuedMinFilter != 0)
