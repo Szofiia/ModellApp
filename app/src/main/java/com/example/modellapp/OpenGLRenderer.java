@@ -30,60 +30,25 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
     private final Context mActivityContext;
     private final OpenGLSurfaceView mGlSurfaceView;
 
-    private final int BYTES_PER_FLOAT = 4;
-    private final int POS_DATA_SIZE = 3;
-    private final int NORM_DATA_SIZE = 3;
-    private final int TEXCOORD_DATA_SIZE = 2;
-    final int STRIDE = (
-            POS_DATA_SIZE +
-                    NORM_DATA_SIZE +
-                    TEXCOORD_DATA_SIZE) * BYTES_PER_FLOAT;
-/*
-    private float[] mViewMatrix = new float[16];
-    private float[] mModelMatrix = new float[16];
-    private float[] mProjectionMatrix = new float[16];
-    private float[] mMVPMatrix = new float[16];*/
+    int TEX;
+    String FILE;
+    private Model mModel;
+    public Angles cAngles;
+
+    Vector3f eye;
+    Vector3f lookAt;
+    Vector3f up;
+
+    private float[] mMVPMatrix;
+    private float[] mProjectionMatrix;
+    private float[] mViewMatrix;
+
     private float[] mLightModelMatrix = new float[16];
-
-    private int textureUniformHandle;
-    private int textureCoordinateHandle;
-    private int brickDataHandle;
-    private int grassDataHandle;
-
-    private int mVPMatrixHandle;
-    private int mVMatrixHandle;
-    private int positionHandle;
-    private int normalHandle;
-    private int lightPosHandle;
-
-    private int programID;
-
-    private int queuedMinFilter;
-    private int queuedMagFilter;
-
-    FloatBuffer cubeBuffer;
-    int cubeBufferIdx;
-
     private final float[] lightPosInModelSpace = new float[] {0.0f, 0.0f, 0.0f, 1.0f};
     private final float[] lightPosInWorldSpace = new float[4];
     private final float[] lightPosInEyeSpace = new float[4];
 
     private int pointProgramID;
-
-    int TEX;
-    String FILE;
-
-    Vector3f eye;
-    Vector3f lookAt;
-    Vector3f up;
-    public Angles cAngles;
-
-    //Mesh Loading
-
-
-    private Model mModel;
-
-    private int mProgramID;
 
     public OpenGLRenderer(Context context, OpenGLSurfaceView glSurfaceView, String _FILE, int _TEX){
         mActivityContext = context;
@@ -92,6 +57,10 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         FILE = _FILE;
         TEX = _TEX;
 
+        mMVPMatrix = new float[16];
+        mProjectionMatrix = new float[16];
+        mViewMatrix = new float[16];
+
     }
 
     @Override
@@ -99,12 +68,11 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
     {
         mModel = new Model(mActivityContext, FILE, TEX);
 
-        GLES20.glClearColor(0.125f, 0.25f, 0.5f, 1.0f);
+        GLES20.glClearColor(0.5546875f, 0.3515625f, 0.3515625f, 1.0f);
 
-        //GLES20.glEnable(GLES20.GL_CULL_FACE); // eldobjuk a hatrafele nezo lapokat
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST); // melysegi teszt bekapcsolasa
-        // GLES20.glCullFace(GLES20.GL_BACK); //a kamerától elfelé néző lapok /GL_FRONT
-
+        GLES20.glEnable(GLES20.GL_CULL_FACE);
+        GLES20.glCullFace(GLES20.GL_BACK);
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
         if (MainActivity.isLoaded == false) {
             eye = new Vector3f(0.0f, 0.0f, 4.0f);
@@ -120,7 +88,6 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
                 cAngles = new Angles(MainActivity.mAngles);
             }
         }
-
         Matrix.setLookAtM(mModel.mViewMatrix, 0, eye.x, eye.y, eye.z, lookAt.x, lookAt.y, lookAt.z, up.x, up.y, up.z);
     }
 
@@ -154,7 +121,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         // Kockak rajzolasa
         Matrix.setIdentityM(mModel.mModelMatrix, 0);
         Matrix.translateM(mModel.mModelMatrix, 0, 0.0f, 0.0f, 0.0f);
-        Matrix.scaleM(mModel.mModelMatrix, 0, 0.3F,mScale * 0.3F,0.3F);
+        Matrix.scaleM(mModel.mModelMatrix, 0, 0.8F,mScale * 0.8F,0.8F);
         mModel.draw();
         Matrix.setLookAtM(mModel.mViewMatrix, 0, eye.x, eye.y, eye.z, lookAt.x, lookAt.y, lookAt.z, up.x, up.y, up.z);
 

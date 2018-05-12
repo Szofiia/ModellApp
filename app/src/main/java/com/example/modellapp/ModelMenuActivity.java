@@ -25,7 +25,7 @@ public class ModelMenuActivity extends AppCompatActivity {
         appleButt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ModelMenuActivity.this, SceneActivity.class);
-                i.putExtra("_FILENAME","apple.obj");
+                i.putExtra("_FILENAME","Apple_smooth.obj");
                 i.putExtra("_TEXNAME", R.drawable.wax);
 
                 startActivity(i);
@@ -36,7 +36,7 @@ public class ModelMenuActivity extends AppCompatActivity {
         suzanneButt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(ModelMenuActivity.this, SceneActivity.class);
-                i.putExtra("_FILENAME","Suzanne.obj");
+                i.putExtra("_FILENAME","Hand.obj");
                 i.putExtra("_TEXNAME", R.drawable.fur_brown);
 
                 startActivity(i);
