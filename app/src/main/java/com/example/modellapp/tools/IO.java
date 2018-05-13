@@ -9,44 +9,44 @@ public class IO {
 
     private static final String FILE_NAME = "save.txt";
 
-    public static  void save(Context cx, String text){
+    public static  void save(Context context, String text){
         try{
-            FileOutputStream fos = cx.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
             fos.write(text.getBytes());
             fos.close();
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    public static  void add(Context cx, String text){
-        String old = load(cx);
-
-        old += text;
-
-        try{
-            FileOutputStream fos = cx.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
-            fos.write(old.getBytes());
-            fos.close();
-
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public static String load(Context cx){
-        String toReturn = "";
+    public static String load(Context context){
+        String result = "";
         try{
-            FileInputStream fis = cx.openFileInput(FILE_NAME);
+            FileInputStream fis = context.openFileInput(FILE_NAME);
             int size = fis.available();
             byte[] buffer = new byte[size];
             fis.read(buffer);
             fis.close();
-            toReturn = new String(buffer);
+            result = new String(buffer);
         } catch (Exception e){
             e.printStackTrace();
         }
-        return toReturn;
-
+        return result;
     }
+
+    /*  public static  void add(Context cx, String text){
+          String old = load(cx);
+
+          old += text;
+
+          try{
+              FileOutputStream fos = cx.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
+              fos.write(old.getBytes());
+              fos.close();
+
+          } catch (Exception e){
+              e.printStackTrace();
+          }
+      }*/
+    //TÖBB MODEL SAVE
 }

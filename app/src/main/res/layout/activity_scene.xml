@@ -15,7 +15,7 @@
         android:layout_gravity="center">
 
         <Button
-            android:id="@+id/flipButton"
+            android:id="@+id/flipX"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -23,8 +23,30 @@
             android:background="@color/colorDarkMango"
 
             android:textAppearance="@style/buttonText"
-            android:text="Flip"
+            android:text="Flip X"
             />
+
+        <Button
+            android:id="@+id/flipY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@color/colorDarkMango"
+
+            android:textAppearance="@style/buttonText"
+            android:text="Flip Y" />
+
+        <Button
+            android:id="@+id/flipZ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@color/colorDarkMango"
+
+            android:textAppearance="@style/buttonText"
+            android:text="Flip Z" />
 
         <Button
             android:id="@+id/saveButton"
@@ -35,34 +57,100 @@
             android:background="@color/colorDarkMango"
 
             android:textAppearance="@style/buttonText"
-            android:text="save" />
-
-        <Button
-            android:id="@+id/loadButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:background="@color/colorDarkMango"
-
-            android:textAppearance="@style/buttonText"
-            android:text="Light" />
-
-        <Button
-            android:id="@+id/tranfLightButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:background="@color/colorDarkMango"
-
-            android:textAppearance="@style/buttonText"
-            android:text="trnsf" />
+            android:text="Save" />
     </LinearLayout>
 
-    <com.example.modellapp.OpenGLSurfaceView
+    <com.example.modellapp.openGL.OpenGLSurfaceView
         android:id="@+id/openGLView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/lighButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+
+            android:background="@drawable/bulb_norm"
+            android:scaleType="fitXY"
+            android:textAppearance="@style/buttonText" />
+
+        <Button
+            android:id="@+id/lighButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+
+            android:background="@drawable/bulb_norm"
+            android:scaleType="fitXY"
+            android:textAppearance="@style/buttonText" />
+
+        <Button
+            android:id="@+id/lighButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+
+            android:background="@drawable/bulb_norm"
+            android:scaleType="fitXY"
+            android:textAppearance="@style/buttonText" />
+
+        <Button
+            android:id="@+id/lighButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+
+            android:background="@drawable/bulb_norm"
+            android:scaleType="fitXY"
+            android:textAppearance="@style/buttonText" />
+
+        <Button
+            android:id="@+id/lighButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+
+            android:background="@drawable/bulb_norm"
+            android:scaleType="fitXY"
+            android:textAppearance="@style/buttonText" />
+
+        <Button
+            android:id="@+id/lighButton6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+
+            android:background="@drawable/bulb_norm"
+            android:textAppearance="@style/buttonText" />
+
+        <Button
+            android:id="@+id/lighButton7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bulb_norm"
+            android:textAppearance="@style/buttonText" />
+    </LinearLayout>
 </LinearLayout>

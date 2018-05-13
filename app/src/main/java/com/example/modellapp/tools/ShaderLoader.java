@@ -6,29 +6,29 @@ import android.util.Log;
 public class ShaderLoader {
     final static String TAG = "ShaderLoading";
 
-    public static int loadShader(int type, String shaderCode){
-        int loadedShader = GLES20.glCreateShader(type);
-        int[] compiled = new int[1];
+    public static int loadShader(int _shaderType, String _shaderCode){
+        int loadedShader = GLES20.glCreateShader(_shaderType);
 
         if(loadedShader == 0){
-            Log.e(TAG, "Error at the initialisation of" + shaderCode + ".");
+            Log.e(TAG, "Error at the initialisation of" + _shaderCode + ".");
             return 0;
         }
 
-        GLES20.glShaderSource(loadedShader, shaderCode);
+        GLES20.glShaderSource(loadedShader, _shaderCode);
         GLES20.glCompileShader(loadedShader);
 
+        int[] compiled = new int[1];
         GLES20.glGetShaderiv(loadedShader, GLES20.GL_COMPILE_STATUS, compiled, 0);
         if(compiled[0] == 0){
-            Log.e(TAG, "Could not compile shader" + loadedShader);
-            Log.e(TAG, " " + GLES20.glGetShaderInfoLog(loadedShader));
+            Log.e(TAG, "Error: Could not compile shader " + loadedShader + " with infoLog:" + GLES20.glGetShaderInfoLog(loadedShader));
 
             GLES20.glDeleteShader(loadedShader);
             loadedShader = 0;
         }
         if(loadedShader == 0){
-            throw new RuntimeException("Error creating vertex shader.");
+            throw new RuntimeException("Error: generating shader failed.");
         }
+
         return loadedShader;
     }
 }

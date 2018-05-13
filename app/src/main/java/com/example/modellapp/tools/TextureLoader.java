@@ -6,34 +6,29 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
-public class TextureLoader
-{
-    public static int loadTexture(final Context context, final int resourceId)
-    {
-        final int[] textureHandle = new int[1];
+public class TextureLoader{
 
-        GLES20.glGenTextures(1, textureHandle, 0);
+    public static int loadTexture(final Context context, final int texID){
+        final BitmapFactory.Options targetDensity = new BitmapFactory.Options();
+        targetDensity.inScaled = false;
+        final Bitmap decoded = BitmapFactory.decodeResource(context.getResources(), texID, targetDensity);
 
-        if (textureHandle[0] == 0)
-        {
-            throw new RuntimeException("Error generating texture name.");
-        }
+        final int[] texture = new int[1];
+        GLES20.glGenTextures(1, texture, 0);
+        if (texture[0] == 0){ throw new RuntimeException("Error: generating texture name failed."); }
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texture[0]);
 
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inScaled = false;
+        GLUtils.texImage2D(
+                    GLES20.GL_TEXTURE_2D,
+                    0,
+                    decoded,
+                    0);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
 
-        final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId, options);
+        decoded.recycle();
 
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
-
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
-
-        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
-
-        bitmap.recycle();
-
-        return textureHandle[0];
+        return texture[0];
     }
 }
 

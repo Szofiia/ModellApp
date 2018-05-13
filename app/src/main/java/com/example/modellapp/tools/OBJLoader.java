@@ -19,14 +19,12 @@ import java.util.Vector;
 
 public class OBJLoader {
     public final int numFaces;
-
     public final float[] normals;
     public final float[] textureCoordinates;
     public final float[] positions;
+    public boolean hasNoTex = false;
 
     public String TAG = "OBJ File Loader";
-
-    public boolean hasNoTex = false;
 
     public OBJLoader(Context context, String file){
         Vector<Vector3f> vertCoords = new Vector<>();
@@ -38,9 +36,7 @@ public class OBJLoader {
 
         try {
             List<String> fileContent = new ArrayList<>();
-
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(context.getAssets().open(file)));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(file)));
 
             String mLine;
             while ((mLine = reader.readLine()) != null) {
@@ -51,30 +47,27 @@ public class OBJLoader {
                 List<String> contents = Arrays.asList(row.replaceAll("(^\\s+|\\s+$)", "").split("\\s+"));
                 switch (contents.get(0)){
                     case "v":
-                        // vertices
-                        Log.i(TAG, "OBJLoader: " + contents);
+//                        Log.i(TAG, "OBJLoader: " + contents);
                         vertCoords.add(new Vector3f(Float.valueOf(contents.get(1)), Float.valueOf(contents.get(2)), Float.valueOf(contents.get(3))));
                         break;
                     case "vt":
-                        // textures
-                        Log.i(TAG, "OBJLoader: " + contents );
+//                        Log.i(TAG, "OBJLoader: " + contents);
                         textCoords.add(new Point2f(Float.valueOf(contents.get(1)), Float.valueOf(contents.get(2))));
                         break;
                     case "vn":
-                        // normals
-                        Log.i(TAG, "OBJLoader: " + contents);
+//                        Log.i(TAG, "OBJLoader: " + contents);
                         normCoords.add(new Vector3f(Float.valueOf(contents.get(1)), Float.valueOf(contents.get(2)), Float.valueOf(contents.get(3))));
                         break;
                     case "f":
-//                      faces: vertex/texture/normal
+//HA NEM TEXTURED, LEGYEN COLOR ATADVA
                         if(contents.size() == 4) {
                             for (int i = 1; i < 4; ++i) {
                                 String[] parts = contents.get(i).split("/");
+                                //EZ
                                 if (parts[1] == "") {
                                     vIndBuf.add(Short.valueOf(parts[0]));
                                     nIndBuf.add(Short.valueOf(parts[2]));
                                     hasNoTex = true;
-
                                 } else {
                                     vIndBuf.add(Short.valueOf(parts[0]));
                                     tIndBuf.add(Short.valueOf(parts[1]));
@@ -84,18 +77,17 @@ public class OBJLoader {
                         }else{
                             for (int i = 1; i < 4; ++i) {
                                 String[] parts = contents.get(i).split("/");
+                                //EZ
                                 if (parts[1] == "") {
                                     vIndBuf.add(Short.valueOf(parts[0]));
                                     nIndBuf.add(Short.valueOf(parts[2]));
                                     hasNoTex = true;
-
                                 } else {
                                     vIndBuf.add(Short.valueOf(parts[0]));
                                     tIndBuf.add(Short.valueOf(parts[1]));
                                     nIndBuf.add(Short.valueOf(parts[2]));
                                 }
                             }
-
                             String[] parts = contents.get(1).split("/");
                             vIndBuf.add(Short.valueOf(parts[0]));
                             tIndBuf.add(Short.valueOf(parts[1]));
@@ -110,30 +102,23 @@ public class OBJLoader {
                             vIndBuf.add(Short.valueOf(parts[0]));
                             tIndBuf.add(Short.valueOf(parts[1]));
                             nIndBuf.add(Short.valueOf(parts[2]));
-
-
-
-
                         }
                         break;
                     default: break;
                 }
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
+        int posX = 0;
         numFaces = vIndBuf.size();
-
         this.normals = new float[numFaces * 3];
         this.textureCoordinates = new float[numFaces * 2];
         this.positions = new float[numFaces * 3];
 
-        int posX = 0;
         for(Short index: vIndBuf){
             positions[posX++] = vertCoords.get( index - 1 ).x;
             positions[posX++] = vertCoords.get( index - 1 ).y;
@@ -150,29 +135,5 @@ public class OBJLoader {
             normals[posX++] = normCoords.get( index - 1 ).y;
             normals[posX++] = normCoords.get( index - 1 ).z;
         }
-
-/*        int positionIndex = 0;
-        int normalIndex = 0;
-        int textureIndex = 0;
-        for (String face : faces) {
-            String[] parts = face.split("/");
-
-            int index = 3 * (Short.valueOf(parts[0]) - 1);
-            positions[positionIndex++] = vertices.get(index++);
-            positions[positionIndex++] = vertices.get(index++);
-            positions[positionIndex++] = vertices.get(index);
-
-            index = 2 * (Short.valueOf(parts[1]) - 1);
-            textureCoordinates[normalIndex++] = textures.get(index++);
-            // NOTE: Bitmap gets y-inverted
-            textureCoordinates[normalIndex++] = 1 - textures.get(index);
-
-            index = 3 * (Short.valueOf(parts[2]) - 1);
-            this.normals[textureIndex++] = normals.get(index++);
-            this.normals[textureIndex++] = normals.get(index++);
-            this.normals[textureIndex++] = normals.get(index);
-        }*/
-
     }
-
 }

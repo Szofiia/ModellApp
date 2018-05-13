@@ -6,22 +6,27 @@ import com.example.modellapp.vecmath.Vector3f;
 import java.util.Arrays;
 import java.util.List;
 
-public class Camera {
-
+public class SavedStage {
+    String FILE;
+    int TEXTURE;
     Vector3f eye;
     Vector3f lookAt;
     Vector3f up;
     Angles angles;
 
-    public Camera( Vector3f _eye, Vector3f _lookAt, Vector3f _up, Angles _angles){
+    public SavedStage(Vector3f _eye, Vector3f _lookAt, Vector3f _up, Angles _angles, String _FILE, int _TEXTURE){
         this.eye = _eye;
         this.lookAt = _lookAt;
         this.up = _up;
         this.angles = _angles;
+        this.FILE = _FILE;
+        this.TEXTURE = _TEXTURE;
     }
 
-    public Camera(String rawStr){
+    public SavedStage(String rawStr){
         List<String> data = Arrays.asList(rawStr.split(","));
+        FILE = new String();
+        TEXTURE = 0;
         eye = new Vector3f();
         lookAt = new Vector3f();
         up = new Vector3f();
@@ -41,6 +46,9 @@ public class Camera {
 
         angles.setTheta( Float.parseFloat((data.get(9))) );
         angles.setFi( Float.parseFloat((data.get(10))) );
+
+        FILE = data.get(11);
+        TEXTURE = Integer.parseInt(data.get(12));
     }
 
     @Override
@@ -60,7 +68,10 @@ public class Camera {
         result += up.z + ",";
 
         result += angles.getTheta() + ",";
-        result += angles.getFi();
+        result += angles.getFi() + ",";
+
+        result += FILE + ",";
+        result += TEXTURE;
 
         return result;
     }
@@ -76,5 +87,11 @@ public class Camera {
     }
     public Angles getAngles() {
         return angles;
+    }
+    public int getTEXTURE() {
+        return TEXTURE;
+    }
+    public String getFILE() {
+        return FILE;
     }
 }

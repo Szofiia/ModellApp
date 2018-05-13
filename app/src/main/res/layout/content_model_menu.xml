@@ -21,7 +21,7 @@
         android:textAppearance="@style/buttonText"
 
         app:layout_constraintBottom_toTopOf="@+id/Cube"
-        app:layout_constraintEnd_toStartOf="@+id/Suzanne"
+        app:layout_constraintEnd_toStartOf="@+id/Hand"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/Suzanne"
+        android:id="@+id/Hand"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="2dp"

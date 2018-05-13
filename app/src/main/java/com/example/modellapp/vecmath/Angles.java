@@ -4,7 +4,10 @@ public class Angles{
     private float theta;
     private float fi;
 
-    public Angles(){}
+    public Angles(){
+        theta = 0;
+        fi = 0;
+    }
 
     public Angles(float _theta, float _fi){
         this.theta = _theta;
@@ -19,20 +22,21 @@ public class Angles{
     public float getTheta() {
         return theta;
     }
-
     public float getFi() {
         return fi;
+    }
+    public Angles getAngles() {
+        return new Angles(theta, fi);
     }
 
     public void setTheta(float theta) {
         this.theta = theta;
     }
-
     public void setFi(float fi) {
         this.fi = fi;
     }
-
-    public Angles getAngles() {
-        return new Angles(theta, fi);
+    public void setAngles(Angles _angles){
+        setTheta(_angles.getTheta());
+        setFi(_angles.getFi());
     }
 }
