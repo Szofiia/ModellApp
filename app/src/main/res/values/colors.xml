@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#8E5A5A</color>
+    <color name="colorPrimary">#8e5a5a</color>
     <color name="colorPrimaryDark">#791919</color>
-    <color name="colorAccent">#F1763E</color>
+    <color name="colorAccent">#f1763e</color>
     <color name="colorSunrise">#CC3B11</color>
-    <color name="colorDarkMango">#AE3711</color>
+    <color name="colorDarkMango">#ae3711</color>
     <color name="colorRubyRed">#951515</color>
 
 

@@ -20,7 +20,7 @@
         android:text="Apple"
         android:textAppearance="@style/buttonText"
 
-        app:layout_constraintBottom_toTopOf="@+id/Cube"
+        app:layout_constraintBottom_toTopOf="@+id/Pot"
         app:layout_constraintEnd_toStartOf="@+id/Hand"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +50,7 @@
         android:text="Suzanne"
 
         android:textAppearance="@style/buttonText"
-        app:layout_constraintBottom_toTopOf="@+id/Cube"
+        app:layout_constraintBottom_toTopOf="@+id/Pot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Apple"
         app:layout_constraintTop_toTopOf="parent" />

@@ -4,51 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ModelMenuActivity">
+    android:background="@color/colorDarkMango"
+    tools:context="szsofia.thesis.modellapp.ModelMenuActivity">
 
-        <Button
-            android:id="@+id/Apple"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/colorDarkMango"
-            android:text="Apple"
-            android:textAppearance="@style/buttonText"
+    <Button
+        android:id="@+id/Apple"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorAccent"
 
-            app:layout_constraintBottom_toTopOf="@+id/Cube"
-            app:layout_constraintEnd_toStartOf="@+id/Hand"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:text="Apple"
+        android:textAppearance="@style/buttonText"
+        app:layout_constraintBottom_toTopOf="@+id/Pot"
+        app:layout_constraintEnd_toStartOf="@+id/Hand"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/Cube"
-            android:layout_width="0dp"
-            android:layout_height="213dp"
-            android:background="@color/colorDarkMango"
-            android:text="Cube"
-            android:textAppearance="@style/buttonText"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+    <Button
+        android:id="@+id/Pot"
+        android:layout_width="0dp"
+        android:layout_height="213dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
 
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+        android:background="@color/colorAccent"
+        android:text="Teapot"
+        android:textAppearance="@style/buttonText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/Hand"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/colorDarkMango"
-        android:text="Hand"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
 
+        android:background="@color/colorAccent"
+        android:text="Hand"
         android:textAppearance="@style/buttonText"
-        app:layout_constraintBottom_toTopOf="@+id/Cube"
+        app:layout_constraintBottom_toTopOf="@+id/Pot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Apple"
         app:layout_constraintTop_toTopOf="parent" />

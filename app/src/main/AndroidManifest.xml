@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.modellapp">
+    package="com.thesis.modellapp">
 
     <!-- Tell the system this app requires OpenGL ES 2.0. -->
     <uses-feature
@@ -14,18 +14,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="szsofia.thesis.modellapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SceneActivity" />
+        <activity android:name="szsofia.thesis.modellapp.SceneActivity" />
         <activity
-            android:name=".ModelMenuActivity"
+            android:name="szsofia.thesis.modellapp.ModelMenuActivity"
             android:label="@string/title_activity_model_menu"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name="szsofia.thesis.modellapp.LoadActivity"></activity>
     </application>
 
 </manifest>

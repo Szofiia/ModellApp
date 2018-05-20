@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorDarkMango"
     android:orientation="vertical"
-    tools:context="com.example.modellapp.MainActivity">
+    tools:context="szsofia.thesis.modellapp.MainActivity">
 
 
     <FrameLayout

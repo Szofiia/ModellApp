@@ -4,67 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.modellapp.SceneActivity"
+    tools:context="szsofia.thesis.modellapp.SceneActivity"
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
-
-        <Button
-            android:id="@+id/flipX"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:background="@color/colorDarkMango"
-
-            android:textAppearance="@style/buttonText"
-            android:text="Flip X"
-            />
-
-        <Button
-            android:id="@+id/flipY"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:background="@color/colorDarkMango"
-
-            android:textAppearance="@style/buttonText"
-            android:text="Flip Y" />
-
-        <Button
-            android:id="@+id/flipZ"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:background="@color/colorDarkMango"
-
-            android:textAppearance="@style/buttonText"
-            android:text="Flip Z" />
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="4dp"
             android:background="@color/colorDarkMango"
+            android:layout_weight="1"
 
-            android:textAppearance="@style/buttonText"
-            android:text="Save" />
+            android:text="Save"
+            android:textAppearance="@style/buttonText" />
+
+        <Button
+            android:id="@+id/flipYX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@color/colorDarkMango"
+            android:layout_weight="3"
+
+            android:text="translate vertical"
+            android:textAppearance="@style/buttonSmallText" />
+
+        <Button
+            android:id="@+id/flipZX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@color/colorDarkMango"
+            android:layout_weight="3"
+
+            android:text="translate horizontal"
+            android:textAppearance="@style/buttonSmallText" />
+
     </LinearLayout>
 
-    <com.example.modellapp.openGL.OpenGLSurfaceView
+    <szsofia.thesis.modellapp.openGL.OpenGLSurfaceView
         android:id="@+id/openGLView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="wrap_content"
