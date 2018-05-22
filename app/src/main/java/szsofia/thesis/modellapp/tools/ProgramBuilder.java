@@ -12,7 +12,6 @@ public class ProgramBuilder {
         if(mProgramID == 0){
             throw new RuntimeException("Error: creating new program failed.");
         }
-
         GLES20.glAttachShader(mProgramID, vsID);
         GLES20.glAttachShader(mProgramID, fsID);
 
@@ -22,7 +21,6 @@ public class ProgramBuilder {
                 GLES20.glBindAttribLocation(mProgramID, i, attributes[i]);
             }
         }
-
         GLES20.glLinkProgram(mProgramID);
 
         GLES20.glGetProgramiv(mProgramID, GLES20.GL_LINK_STATUS, result, 0);

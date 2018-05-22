@@ -57,11 +57,11 @@ public class SceneActivity extends AppCompatActivity {
         height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
 
+        int TEXNAME;
+        String FILENAME;
+        String loadedFile;
         Intent i = getIntent();
         isLoaded = i.getBooleanExtra("_ISLOADED", false);
-        String loadedFile;
-        String FILENAME;
-        int TEXNAME;
         if (isLoaded) {
             loadedFile = i.getStringExtra("_LOADEDFILE");
             SavedStage tempSavedStage = new SavedStage(loadedFile);
@@ -101,7 +101,7 @@ public class SceneActivity extends AppCompatActivity {
         flipZX.setOnClickListener(v -> mRenderer.translateOnZX());
         final Button saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(v -> onSave(lightsTurned));
-// TODO: BUTTON BOOLEAN PÁR
+
         for (int k = 0; k < 7; ++k) {
             final int l = k;
             lightButtons[l].setOnClickListener(new View.OnClickListener() {
@@ -113,7 +113,6 @@ public class SceneActivity extends AppCompatActivity {
             });
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -124,7 +123,6 @@ public class SceneActivity extends AppCompatActivity {
         super.onPause();
         openGLSurfaceView.onPause();
     }
-
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         switch (e.getAction() & MotionEvent.ACTION_MASK){

@@ -14,14 +14,10 @@ import szsofia.thesis.modellapp.tools.SavedStage;
 import szsofia.thesis.modellapp.tools.Model;
 import szsofia.thesis.modellapp.vecmath.Angles;
 import szsofia.thesis.modellapp.vecmath.Vector3f;
-//TODO: make more save files
-//TODO: saving the scale
-//TODO: sAVE WITH FLIP also changing the flip direction
 
 public class OpenGLRenderer implements GLSurfaceView.Renderer
 {
     private final Context mActivityContext;
-    private final OpenGLSurfaceView mGlSurfaceView;
 
     private int TEX;
     private String FILE;
@@ -31,8 +27,8 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
     public Angles cAngles;
     public float scale;
 
-    public Vector3f eye;
-    public Vector3f lookAt;
+    private Vector3f eye;
+    private Vector3f lookAt;
     public Vector3f up;
 
     private float[] modelMatrix;
@@ -42,7 +38,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 
     public OpenGLRenderer(Context context, OpenGLSurfaceView glSurfaceView, String _FILE, int _TEX, String loadedFile){
         mActivityContext = context;
-        mGlSurfaceView = glSurfaceView;
+        OpenGLSurfaceView mGlSurfaceView = glSurfaceView;
         cAngles = new Angles((float)-Math.PI /2,(float) Math.PI/2);
         scale = 1;
         FILE = _FILE;
@@ -101,15 +97,6 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
     @Override
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear( GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-//TRANSZFORMÁCIÓK
-        //gömbi koordináták:
-        // theta és fi felcserélve (theta eleme 0-pi)
-        // mivel a felfele mutató irány mindig az y, ezért a setlookat függvénynél a kamera koordinátarendszere
-        //aképp fog zámolódni
-        //A kamera "jobb oldali" tengelye ezért elfordul, így a képet mindig tükrösen látjuk, nem pedig egyenesen előre
-        //ezért az up irányt nem az y-ba fogjuk tenni, hanem mingig a z-x tengely síkjűban lévő kör befele mutató iránya
-        //illetve az eye befele mutató vektorának vektoriális szorzatába.
-        //ezzel a kamera felfele mutató iránya is jó lesz
         float theta = cAngles.getTheta();
         float fi = cAngles.getFi();
 
@@ -128,10 +115,6 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
     public void onSave(Context context,  boolean[] lights){
         SavedStage mSavedStage = new SavedStage(eye, lookAt, up, cAngles, scale, lights,FILE, TEX);
         IO.save(context, mSavedStage.toString());
-    }
-
-    private long time() {
-        return SystemClock.uptimeMillis() % 10000L;
     }
 
     public void translateOnYX(){

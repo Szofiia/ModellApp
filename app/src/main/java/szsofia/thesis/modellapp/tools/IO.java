@@ -34,19 +34,4 @@ public class IO {
         return result;
     }
 
-    /*  public static  void add(Context cx, String text){
-          String old = load(cx);
-
-          old += text;
-
-          zsoln{
-              FileOutputStream fos = cx.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
-              fos.write(old.getBytes());
-              fos.close();
-
-          } catch (Exception e){
-              e.printStackTrace();
-          }
-      }*/
-    //TÖBB MODEL SAVE
 }

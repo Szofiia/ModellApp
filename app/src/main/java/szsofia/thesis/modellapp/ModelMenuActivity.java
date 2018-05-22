@@ -32,7 +32,7 @@ public class ModelMenuActivity extends AppCompatActivity {
         cubeButt.setOnClickListener(v -> {
             Intent i = new Intent(ModelMenuActivity.this, SceneActivity.class);
             i.putExtra("_FILENAME","TeaPot.obj");
-            i.putExtra("_TEXNAME", R.drawable.herendi);
+            i.putExtra("_TEXNAME", R.drawable.herend);
             startActivity(i);
         });
     }

@@ -19,11 +19,11 @@
             android:background="@drawable/sunrise_header"
 
             android:maxLines="1"
-            android:text="Dummy Title"
+            android:text="MiniModel"
             android:textAppearance="@style/titleText" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/subheader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -31,7 +31,7 @@
             android:paddingBottom="24dp"
             android:paddingRight="24dp"
 
-            android:text="Choose a dummy option"
+            android:text="Models for drawing"
             android:textAppearance="@style/mainText" />
     </FrameLayout>
 
@@ -49,7 +49,7 @@
             android:paddingBottom="120dp"
 
             android:paddingLeft="88dp"
-            android:text="Create a new dummy"
+            android:text="Create new scene"
             android:textAppearance="@style/buttonText" />
 
         <Button
@@ -61,7 +61,7 @@
             android:paddingLeft="-112dp"
             android:paddingTop="120dp"
 
-            android:text="Load saved Dummy"
+            android:text="Load saved scene"
             android:textAppearance="@style/buttonText" />
         <!--android:onClick="loadScene"-->
     </FrameLayout>

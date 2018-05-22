@@ -44,28 +44,19 @@ public class OBJLoader {
                 List<String> contents = Arrays.asList(row.replaceAll("(^\\s+|\\s+$)", "").split("\\s+"));
                 switch (contents.get(0)){
                     case "v":
-//                        Log.i(TAG, "OBJLoader: " + contents);
                         vertCoords.add(new Vector3f(Float.valueOf(contents.get(1)), Float.valueOf(contents.get(2)), Float.valueOf(contents.get(3))));
                         break;
                     case "vt":
-//                        Log.i(TAG, "OBJLoader: " + contents);
                         textCoords.add(new Point2f(Float.valueOf(contents.get(1)), Float.valueOf(contents.get(2))));
                         break;
                     case "vn":
-//                        Log.i(TAG, "OBJLoader: " + contents);
                         normCoords.add(new Vector3f(Float.valueOf(contents.get(1)), Float.valueOf(contents.get(2)), Float.valueOf(contents.get(3))));
                         break;
                     case "f":
-//HA NEM TEXTURED, LEGYEN COLOR ATADVA
                         if(contents.size() == 4) {
                             for (int i = 1; i < 4; ++i) {
                                 String[] parts = contents.get(i).split("/");
-                                //EZ
-                                if (parts[1] == "") {
-                                    vIndBuf.add(Short.valueOf(parts[0]));
-                                    nIndBuf.add(Short.valueOf(parts[2]));
-                                    hasNoTex = true;
-                                } else {
+                                {
                                     vIndBuf.add(Short.valueOf(parts[0]));
                                     tIndBuf.add(Short.valueOf(parts[1]));
                                     nIndBuf.add(Short.valueOf(parts[2]));
@@ -74,12 +65,7 @@ public class OBJLoader {
                         }else{
                             for (int i = 1; i < 4; ++i) {
                                 String[] parts = contents.get(i).split("/");
-                                //EZ
-                                if (parts[1] == "") {
-                                    vIndBuf.add(Short.valueOf(parts[0]));
-                                    nIndBuf.add(Short.valueOf(parts[2]));
-                                    hasNoTex = true;
-                                } else {
+                                {
                                     vIndBuf.add(Short.valueOf(parts[0]));
                                     tIndBuf.add(Short.valueOf(parts[1]));
                                     nIndBuf.add(Short.valueOf(parts[2]));
