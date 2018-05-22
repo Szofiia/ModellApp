@@ -1,17 +1,21 @@
-package szsofia.thesis.modellapp.shaders;
+package szsofia.thesis.modellapp.shader_tools;
 
 public class ObjectShader {
     private final static String objVertexShader =
+/*            "#version 300 es \n"+"" +
+            "void main(){" +
+            "}"*/
+            "#version 300 es \n" +
             "uniform mat4 u_MVPMatrix;" +
             "uniform mat4 u_MVMatrix;" +
 
-            "attribute vec4 vs_in_Position;" +
-            "attribute vec3 vs_in_Normal;" +
-            "attribute vec2 vs_in_Tex_coordinate;" +
+            "layout (location = 0) in vec4 vs_in_Position;" +
+            "layout (location = 1) in vec3 vs_in_Normal;" +
+            "layout (location = 2) in vec2 vs_in_Tex_coordinate;" +
 
-            "varying vec3 fs_in_Position;" +
-            "varying vec3 fs_in_Normal;" +
-            "varying vec2 fs_in_Tex_coordinate;" +
+            "out vec3 fs_in_Position;" +
+            "out vec3 fs_in_Normal;" +
+            "out vec2 fs_in_Tex_coordinate;" +
 
             "void main(){" +
                 "gl_Position = u_MVPMatrix * vs_in_Position; " +
@@ -22,7 +26,11 @@ public class ObjectShader {
             "}";
 
     private final static String objFragmentShader =
-            "precision mediump float;" +
+/*            "#version 300 es \n"+
+                    "" +
+            "void main(){" +
+            "}"*/
+            "#version 300 es \n" +
             "uniform vec4 ambient;" +
             "uniform vec4 diffuse;" +
             "uniform vec4 specular;" +
@@ -30,15 +38,15 @@ public class ObjectShader {
             "uniform vec3 u_LightPos; " +
             "uniform sampler2D s_Texture;" +
 
-            "varying vec3 fs_in_Position;" +
-            "varying vec3 fs_in_Normal;" +
-            "varying vec2 fs_in_Tex_coordinate;" +
+            "out vec3 fs_in_Position;" +
+            "out vec3 fs_in_Normal;" +
+            "out vec2 fs_in_Tex_coordinate;" +
 
-            "varying vec4 fs_out_Position;" +
-            "varying vec4 fs_out_Normal;" +
-            "varying vec4 fs_out_Ambient;" +
-            "varying vec4 fs_out_Diffuse;" +
-            "varying vec4 fs_out_Specular;" +
+            "layout (location = 0) out vec4 fs_out_Position;" +
+            "layout (location = 1) out vec4 fs_out_Normal;" +
+            "layout (location = 3) out vec4 fs_out_Ambient;" +
+            "out vec4 fs_out_Diffuse;" +
+            "out vec4 fs_out_Specular;" +
 
             "void main(){" +
                 "float distance = length(u_LightPos - fs_in_Position);" +

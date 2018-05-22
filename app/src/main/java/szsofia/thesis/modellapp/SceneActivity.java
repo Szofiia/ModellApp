@@ -24,8 +24,8 @@ public class SceneActivity extends AppCompatActivity {
     boolean isLoaded;
     boolean[] lightsTurned;
 
-    int width;
-    int height;
+    public static int width;
+    public static int height;
     private final float MIN = 0.7f;
     private final float MAX = 2.5f;
     private Point2f actual;

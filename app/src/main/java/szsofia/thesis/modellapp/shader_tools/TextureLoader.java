@@ -1,4 +1,4 @@
-package szsofia.thesis.modellapp.tools;
+package szsofia.thesis.modellapp.shader_tools;
 
 import android.content.Context;
 import android.graphics.Bitmap;

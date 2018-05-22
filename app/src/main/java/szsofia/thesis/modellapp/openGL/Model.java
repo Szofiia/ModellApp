@@ -1,10 +1,15 @@
-package szsofia.thesis.modellapp.tools;
+package szsofia.thesis.modellapp.openGL;
 
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
-import szsofia.thesis.modellapp.shaders.ObjectShader;
+import szsofia.thesis.modellapp.shader_tools.GBuffer;
+import szsofia.thesis.modellapp.shader_tools.ObjectShader;
+import szsofia.thesis.modellapp.shader_tools.ProgramBuilder;
+import szsofia.thesis.modellapp.shader_tools.ShaderLoader;
+import szsofia.thesis.modellapp.shader_tools.TextureLoader;
+import szsofia.thesis.modellapp.tools.OBJLoader;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -23,7 +28,7 @@ public class Model {
     private int ambientContent;
     private int diffuseContent;
     private int specularContent;
-    private int brickDataHandle;
+    private int textureDataHandler;
     private int grassDataHandle;
     private final int bufferIndex;
 
@@ -32,8 +37,10 @@ public class Model {
 
     private float[] mMVPMatrix;
 
-    private int mProgramID;
+    public int mProgramID;
     int COUNT;
+
+    GBuffer geometryBuffer;
 
     public Model(Context context, String FILE, int TEX){
 ///Todo:MI VAN HA NINCS TEX coord. az obj-ben
@@ -53,7 +60,7 @@ public class Model {
                         "vs_in_Normal",
                         "vs_in_Tex_coordinate"});
 
-        brickDataHandle = TextureLoader.loadTexture(context, TEX);
+        textureDataHandler = TextureLoader.loadTexture(context, TEX);
         GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
 
         //MIN MAG MIPMAPING
@@ -74,6 +81,10 @@ public class Model {
     public void draw(float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix){
         GLES20.glUseProgram(mProgramID);
 
+//        geometryBuffer.bindFBOForWriting();
+
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+
         int mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgramID, "u_MVPMatrix");
         int mMVMatrixHandle = GLES20.glGetUniformLocation(mProgramID, "u_MVMatrix");
         int mPositionHandle = GLES20.glGetAttribLocation(mProgramID, "vs_in_Position");
@@ -87,18 +98,16 @@ public class Model {
         GLES20.glUniform4f(diffuseContent, 1.0f, 0.829f, 0.829f, 1.0f);
         GLES20.glUniform4f(specularContent,0.296648f, 0.296648f, 0.296648f, 1.0f);
 
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, brickDataHandle);
-        GLES20.glUniform1i(textureUniformHandle, 0);
+        // GLES20.glUniform1i(textureUniformHandle, 0);
 
-        GLES20.glEnableVertexAttribArray(textureCoordinateHandle);
+//        GLES20.glEnableVertexAttribArray(textureCoordinateHandle);
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, bufferIndex);
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
         int STRIDE = (
                 POS_DATA_SIZE +
                         NORM_DATA_SIZE +
                         TEXCOORD_DATA_SIZE) * BYTES_PER_FLOAT;
+        GLES20.glEnableVertexAttribArray(mPositionHandle);
         GLES20.glVertexAttribPointer(
                 mPositionHandle,
                 POS_DATA_SIZE, GLES20.GL_FLOAT,
@@ -106,7 +115,6 @@ public class Model {
                 STRIDE,
                 0);
 
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, bufferIndex);
         GLES20.glEnableVertexAttribArray(mNormalHandle);
         GLES20.glVertexAttribPointer(
                 mNormalHandle,
@@ -115,7 +123,6 @@ public class Model {
                 false, STRIDE,
                 POS_DATA_SIZE * BYTES_PER_FLOAT);
 
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, bufferIndex);
         GLES20.glEnableVertexAttribArray(mTextureCoordinateHandle);
         GLES20.glVertexAttribPointer(
                 mTextureCoordinateHandle,
@@ -136,6 +143,9 @@ public class Model {
         GLES20.glDisableVertexAttribArray(mPositionHandle);
         GLES20.glDisableVertexAttribArray(mNormalHandle);
         GLES20.glDisableVertexAttribArray(mTextureCoordinateHandle);
+
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureDataHandler);
     }
 
     private int makeBuffer(OBJLoader mObjLoader){
@@ -178,9 +188,9 @@ public class Model {
 
     public void setMinFilter(final int filter)
     {
-        if (brickDataHandle != 0 && grassDataHandle != 0)
+        if (textureDataHandler != 0 && grassDataHandle != 0)
         {
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, brickDataHandle);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureDataHandler);
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, filter);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, grassDataHandle);
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, filter);
@@ -193,9 +203,9 @@ public class Model {
 
     public void setMagFilter(final int filter)
     {
-        if (brickDataHandle != 0 && grassDataHandle != 0)
+        if (textureDataHandler != 0 && grassDataHandle != 0)
         {
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, brickDataHandle);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureDataHandler);
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, filter);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, grassDataHandle);
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, filter);

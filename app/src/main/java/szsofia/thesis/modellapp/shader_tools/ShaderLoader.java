@@ -1,4 +1,4 @@
-package szsofia.thesis.modellapp.tools;
+package szsofia.thesis.modellapp.shader_tools;
 
 import android.opengl.GLES20;
 import android.util.Log;
