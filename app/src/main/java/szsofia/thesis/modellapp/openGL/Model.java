@@ -2,6 +2,7 @@ package szsofia.thesis.modellapp.openGL;
 
 import android.content.Context;
 import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.Matrix;
 
 import szsofia.thesis.modellapp.shader_tools.GBuffer;
@@ -22,7 +23,6 @@ public class Model {
     private final int NORM_DATA_SIZE = 3;
     private final int TEXCOORD_DATA_SIZE = 2;
 
-    private int mLightPosHandle;
     private int textureUniformHandle;
     private int textureCoordinateHandle;
     private int ambientContent;
@@ -58,7 +58,7 @@ public class Model {
                 new String[] {
                         "vs_in_Position",
                         "vs_in_Normal",
-                        "vs_in_Tex_coordinate"});
+                        "vs_in_TexCoord"});
 
         textureDataHandler = TextureLoader.loadTexture(context, TEX);
         GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
@@ -79,17 +79,12 @@ public class Model {
     }
 
     public void draw(float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix){
-        GLES20.glUseProgram(mProgramID);
 
-//        geometryBuffer.bindFBOForWriting();
-
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-
-        int mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgramID, "u_MVPMatrix");
-        int mMVMatrixHandle = GLES20.glGetUniformLocation(mProgramID, "u_MVMatrix");
-        int mPositionHandle = GLES20.glGetAttribLocation(mProgramID, "vs_in_Position");
-        int mNormalHandle = GLES20.glGetAttribLocation(mProgramID, "vs_in_Normal");
-        int mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgramID, "vs_in_Tex_coordinate");
+        int positions = GLES20.glGetAttribLocation(mProgramID, "vs_in_Position");
+        int normals = GLES20.glGetAttribLocation(mProgramID, "vs_in_Normal");
+        int texCoords = GLES20.glGetAttribLocation(mProgramID, "vs_in_TexCoord");
+        int MVP = GLES20.glGetUniformLocation(mProgramID, "u_MVPMatrix");
+        int MV = GLES20.glGetUniformLocation(mProgramID, "u_MVMatrix");
         ambientContent = GLES20.glGetUniformLocation(mProgramID, "ambient");
         diffuseContent = GLES20.glGetUniformLocation(mProgramID, "diffuse");
         specularContent = GLES20.glGetUniformLocation(mProgramID, "specular");
@@ -107,25 +102,25 @@ public class Model {
                 POS_DATA_SIZE +
                         NORM_DATA_SIZE +
                         TEXCOORD_DATA_SIZE) * BYTES_PER_FLOAT;
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
+        GLES20.glEnableVertexAttribArray(positions);
         GLES20.glVertexAttribPointer(
-                mPositionHandle,
+                positions,
                 POS_DATA_SIZE, GLES20.GL_FLOAT,
                 false,
                 STRIDE,
                 0);
 
-        GLES20.glEnableVertexAttribArray(mNormalHandle);
+        GLES20.glEnableVertexAttribArray(normals);
         GLES20.glVertexAttribPointer(
-                mNormalHandle,
+                normals,
                 NORM_DATA_SIZE,
                 GLES20.GL_FLOAT,
                 false, STRIDE,
                 POS_DATA_SIZE * BYTES_PER_FLOAT);
 
-        GLES20.glEnableVertexAttribArray(mTextureCoordinateHandle);
+        GLES20.glEnableVertexAttribArray(texCoords);
         GLES20.glVertexAttribPointer(
-                mTextureCoordinateHandle,
+                texCoords,
                 TEXCOORD_DATA_SIZE,
                 GLES20.GL_FLOAT,
                 false,
@@ -133,19 +128,21 @@ public class Model {
                 (POS_DATA_SIZE + NORM_DATA_SIZE) * BYTES_PER_FLOAT);
 
         Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
-        GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mMVPMatrix, 0);
+        GLES20.glUniformMatrix4fv(MV, 1, false, mMVPMatrix, 0);
 
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
-        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+        GLES20.glUniformMatrix4fv(MVP, 1, false, mMVPMatrix, 0);
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, COUNT);
 
-        GLES20.glDisableVertexAttribArray(mPositionHandle);
-        GLES20.glDisableVertexAttribArray(mNormalHandle);
-        GLES20.glDisableVertexAttribArray(mTextureCoordinateHandle);
+        GLES20.glDisableVertexAttribArray(positions);
+        GLES20.glDisableVertexAttribArray(normals);
+        GLES20.glDisableVertexAttribArray(texCoords);
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureDataHandler);
+
+        GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
     }
 
     private int makeBuffer(OBJLoader mObjLoader){
