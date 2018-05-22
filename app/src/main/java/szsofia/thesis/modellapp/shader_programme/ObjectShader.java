@@ -1,4 +1,4 @@
-package szsofia.thesis.modellapp.shaders;
+package szsofia.thesis.modellapp.shader_programme;
 
 public class ObjectShader {
     private final static String objVertexShader =
@@ -45,10 +45,10 @@ public class ObjectShader {
                 "vec3 lightVector = normalize(u_LightPos - fs_in_Position);" +
 
                 "float diff = max(dot(fs_in_Normal, lightVector), 0.0);" +
-                "diff = diff * (1.0 / (0.2 + (0.10 * distance)));" +
+                "diff = diff * (1.0 / (0.2 + (0.2 * distance)));" +
                 "diff = diff + 0.3;" +
 
-                "gl_FragColor = (diffuse * texture2D(s_Texture, fs_in_Tex_coordinate));" +
+                "gl_FragColor = (diff  *  texture2D(s_Texture, fs_in_Tex_coordinate));" +
             "}";
 
     public static String getOVS(){
