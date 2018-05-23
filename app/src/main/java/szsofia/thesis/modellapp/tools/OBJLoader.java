@@ -13,15 +13,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
-
+//TODO: find reference to OBJ loader's  triangle method
 public class OBJLoader {
-    public final int numFaces;
-    public final float[] normals;
-    public final float[] textureCoordinates;
-    public final float[] positions;
-    public boolean hasNoTex = false;
-
-    public String TAG = "OBJ File Loader";
+    private final int numFaces;
+    private final float[] positions;
+    private final float[] normals;
+    private final float[] textureCoordinates;
 
     public OBJLoader(Context context, String file){
         Vector<Vector3f> vertCoords = new Vector<>();
@@ -118,5 +115,21 @@ public class OBJLoader {
             normals[posX++] = normCoords.get( index - 1 ).y;
             normals[posX++] = normCoords.get( index - 1 ).z;
         }
+    }
+
+    public int getNumFaces() {
+        return numFaces;
+    }
+
+    public float[] getPositions() {
+        return positions;
+    }
+
+    public float[] getNormals() {
+        return normals;
+    }
+
+    public float[] getTextureCoordinates() {
+        return textureCoordinates;
     }
 }

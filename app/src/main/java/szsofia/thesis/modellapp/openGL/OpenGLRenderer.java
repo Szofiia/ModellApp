@@ -36,9 +36,8 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
     private float[] projectionMatrix;
 
 
-    public OpenGLRenderer(Context context, OpenGLSurfaceView glSurfaceView, String _FILE, int _TEX, String loadedFile){
+    public OpenGLRenderer(Context context, String _FILE, int _TEX, String loadedFile){
         mActivityContext = context;
-        OpenGLSurfaceView mGlSurfaceView = glSurfaceView;
         cAngles = new Angles((float)-Math.PI /2,(float) Math.PI/2);
         scale = 1;
         FILE = _FILE;
@@ -64,18 +63,10 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
         if (isLoaded == false) {
-            eye = new Vector3f(0.0f, 0.0f, 4.0f);
-            lookAt = new Vector3f(0.0f, 0.0f, 0.0f);
-            up = new Vector3f(0.0f, 1.0f, 0.0f);
+            newView();
         }else{
-            SavedStage loadedSavedStage = new SavedStage(newLoadedFile);
-            eye = new Vector3f(loadedSavedStage.getEye());
-            lookAt = new Vector3f(loadedSavedStage.getLookAt());
-            up = new Vector3f(loadedSavedStage.getUp());
-            cAngles = new Angles(loadedSavedStage.getAngles());
-            scale = loadedSavedStage.getScale();
-            isLoaded = false;
-        }
+            loadView(); }
+
         Matrix.setLookAtM(viewMatrix, 0, eye.x, eye.y, eye.z, lookAt.x, lookAt.y, lookAt.z, up.x, up.y, up.z);
     }
 
@@ -97,19 +88,40 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
     @Override
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear( GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
+        transformEvents();
+        mModel.draw(modelMatrix, viewMatrix, projectionMatrix);
+    }
+
+    void newView(){
+        eye = new Vector3f(0.0f, 0.0f, 4.0f);
+        lookAt = new Vector3f(0.0f, 0.0f, 0.0f);
+        up = new Vector3f(0.0f, 1.0f, 0.0f);
+    }
+
+    void loadView(){
+        SavedStage loadedSavedStage = new SavedStage(newLoadedFile);
+        eye = new Vector3f(loadedSavedStage.getEye());
+        lookAt = new Vector3f(loadedSavedStage.getLookAt());
+        up = new Vector3f(loadedSavedStage.getUp());
+        cAngles = new Angles(loadedSavedStage.getAngles());
+        scale = loadedSavedStage.getScale();
+        isLoaded = false;
+    }
+
+    void transformEvents(){
         float theta = cAngles.getTheta();
         float fi = cAngles.getFi();
+        float R = 4.0f;
 
         eye.setValues(
-            (4.0f* scale) * Math.sin(theta) * Math.cos(fi),
-            (4.0f* scale) * Math.cos(theta),
-            (4.0f* scale) * Math.sin(theta) * Math.sin(fi)
+                (R * scale) * Math.sin(theta) * Math.cos(fi),
+                (R * scale) * Math.cos(theta),
+                (R * scale) * Math.sin(theta) * Math.sin(fi)
         );
         up.cross(eye.multipyBy(-1), new Vector3f((float)Math.sin(fi), 0.0f, (-1)*(float)Math.cos(fi)));
 
         Matrix.setLookAtM(viewMatrix, 0, eye.x, eye.y, eye.z, lookAt.x, lookAt.y, lookAt.z, up.x, up.y, up.z);
         Matrix.setIdentityM(modelMatrix, 0);
-        mModel.draw(modelMatrix, viewMatrix, projectionMatrix);
     }
 
     public void onSave(Context context,  boolean[] lights){
@@ -124,5 +136,4 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
     public void translateOnZX(){
         cAngles.setTheta(2 * Math.PI - cAngles.getTheta());
     }
-
 }

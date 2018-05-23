@@ -16,7 +16,7 @@ public class ModelMenuActivity extends AppCompatActivity {
         appleButt.setOnClickListener(v -> {
             Intent i = new Intent(ModelMenuActivity.this, SceneActivity.class);
             i.putExtra("_FILENAME","Apple.obj");
-            i.putExtra("_TEXNAME", R.drawable.red_wax2);
+            i.putExtra("_TEXNAME", R.drawable.red_wax);
             startActivity(i);
         });
 

@@ -87,11 +87,11 @@ public class SceneActivity extends AppCompatActivity {
         final ConfigurationInfo confInfo = activityManager.getDeviceConfigurationInfo();
         if (confInfo.reqGlEsVersion >= 0x30000){
             openGLSurfaceView.setEGLContextClientVersion(3);
-            mRenderer = new OpenGLRenderer(this, openGLSurfaceView, FILENAME, TEXNAME, loadedFile);
+            mRenderer = new OpenGLRenderer(this, FILENAME, TEXNAME, loadedFile);
             openGLSurfaceView.setRenderer(mRenderer);
         }else if(confInfo.reqGlEsVersion >= 0x20000){
            openGLSurfaceView.setEGLContextClientVersion(2);
-            mRenderer = new OpenGLRenderer(this, openGLSurfaceView, FILENAME, TEXNAME, loadedFile);
+            mRenderer = new OpenGLRenderer(this, FILENAME, TEXNAME, loadedFile);
             openGLSurfaceView.setRenderer(mRenderer);
         }else return;
 

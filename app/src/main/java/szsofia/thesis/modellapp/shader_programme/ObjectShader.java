@@ -23,9 +23,9 @@ public class ObjectShader {
 
     private final static String objFragmentShader =
             "precision mediump float;" +
-            "uniform vec4 ambient;" +
+/*            "uniform vec4 ambient;" +
             "uniform vec4 diffuse;" +
-            "uniform vec4 specular;" +
+            "uniform vec4 specular;" +*/
 
             "uniform vec3 u_LightPos; " +
             "uniform sampler2D s_Texture;" +
@@ -33,22 +33,22 @@ public class ObjectShader {
             "varying vec3 fs_in_Position;" +
             "varying vec3 fs_in_Normal;" +
             "varying vec2 fs_in_Tex_coordinate;" +
-
+/*
             "varying vec4 fs_out_Position;" +
             "varying vec4 fs_out_Normal;" +
             "varying vec4 fs_out_Ambient;" +
             "varying vec4 fs_out_Diffuse;" +
-            "varying vec4 fs_out_Specular;" +
+            "varying vec4 fs_out_Specular;" +*/
 
             "void main(){" +
-                "float distance = length(u_LightPos - fs_in_Position);" +
-                "vec3 lightVector = normalize(u_LightPos - fs_in_Position);" +
+            "float distance = length(u_LightPos - fs_in_Position);" +
+            "vec3 lightVector = normalize(u_LightPos - fs_in_Position);" +
 
-                "float diff = max(dot(fs_in_Normal, lightVector), 0.0);" +
-                "diff = diff * (1.0 / (0.2 + (0.2 * distance)));" +
-                "diff = diff + 0.3;" +
+            "float diff = max(dot(fs_in_Normal, lightVector), 0.0);" +
+            "diff = diff * (1.0 / (0.2 + (0.2 * distance)));" +
+            "diff = diff + 0.3;" +
 
-                "gl_FragColor = (diff  *  texture2D(s_Texture, fs_in_Tex_coordinate));" +
+            "gl_FragColor = ( texture2D(s_Texture, fs_in_Tex_coordinate));" +
             "}";
 
     public static String getOVS(){
